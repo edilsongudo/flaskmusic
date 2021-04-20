@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block conteudo %}
+
+<div class="file-upload">
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.music }}
+        <label for="music"><span class="plussign">+</span></label>
+        <div id="file-chosen">No file chosen</div>
+    </form>
+</div>
+
+
+
+<div class="songs-container">
+
+    {% for song in songs %}
+        <div style="margin-top: 20px;" class="song">
+            <audio  controls>
+                <source  preload="metadata" src="../static/music/{{ song }}" type="audio/mpeg">
+            </audio>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

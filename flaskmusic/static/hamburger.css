@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-image: linear-gradient(90deg, #A1128B, #B848BF);
+    background-image: linear-gradient(90deg, #c85d34, #ad444e);
+    color: white;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    max-width: 40%;
+    margin-left: auto;
+}
+
+nav ul li {
+    margin-left: auto;
+    padding: 5%;
+    cursor: pointer;
+}
+
+.fas {
+    font-size: 30px;
+}
+
+.sidebar {
+    width: 100%;
+    height: 100%; /* Changin this to pixels creates a sidebar */
+    background-image: linear-gradient(90deg, #A1128B, #B848BF);
+    background-image: linear-gradient(90deg, #c85d34, #ad444e);
+
+    color: white;
+    margin-left: auto;
+    display: none;
+    margin-top: -16px;
+    padding-left: 16px;
+    list-style: none;
+}
+
+.active {
+    display: block;
+}
+
+@media only screen and (min-width: 600px) {
+    .hamburger {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-item {
+        display: none;
+    }
+}
