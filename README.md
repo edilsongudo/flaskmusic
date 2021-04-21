@@ -4,9 +4,9 @@ You can access the app from any device if connected to the same network
 
 ### Screenshots
 
-<img src="screenshots/screenshot1.png" width="550">
+<img src="screenshots/screenshot1.jpg" width="550">
 
-<img src="screenshots/screenshot2.png" width="550">
+<img src="screenshots/screenshot2.jpg" width="550">
 
 ### Installation and Usage
 
