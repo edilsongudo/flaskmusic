@@ -1,8 +1,6 @@
 *.mp3
 *.m4a
 *.aac
-*.png
-*.jpg
 .DS_Store
 .env
 .flaskenv
