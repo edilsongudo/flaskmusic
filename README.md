@@ -2,10 +2,12 @@
 A flask web aplication from streaming and sharing music
 You can access the app from any device if connected to the same network
 
-<!-- ### Screenshots
+### Screenshots
 
 <img src="screenshots/screenshot1.png" width="550">
- -->
+
+<img src="screenshots/screenshot2.png" width="550">
+
 ### Installation and Usage
 
 ```

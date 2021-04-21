@@ -30,31 +30,11 @@ label {
     margin-left: 2px;
 }
 
-.songs-container {
-    border-radius: 8px;
-    width: 98%;
-    margin: 16px auto;
-    padding: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+.music-container {
+    margin: 10px;
 }
 
-.artist-name {
-    font-size: 12px;
-}
-
-.album-name {
-    font-size: 12px;
-}
-
-.song-name {
-    font-size: 12px;
-}
-
-.song {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 5px;
+#small {
+    font-size: 16px;
 }
 
