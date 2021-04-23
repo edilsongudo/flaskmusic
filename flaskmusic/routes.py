@@ -49,8 +49,14 @@ def home():
     return render_template('home.html', form=form, songs=songs)
 
 
-@app.route('/player')
-def player():
+@app.route("/player/")
+def player_with_no_last():
+    songs = os.listdir(app.config['UPLOADED_AUDIOS_DEST'])
+    return render_template('player.html', songs=json.dumps(songs), last=json.dumps({'last': 'return -1'}))
+
+
+@app.route('/player/<last>')
+def player(last):
     songs = os.listdir(app.config['UPLOADED_AUDIOS_DEST'])
 
-    return render_template('player.html', songs=json.dumps(songs))
+    return render_template('player.html', songs=json.dumps(songs), last=json.dumps(last))

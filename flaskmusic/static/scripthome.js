@@ -1,3 +1,27 @@
+// $(document).ready(function() {
+
+//     $('a').click(function(e) {
+//         e.preventDefault()
+//         var csrfToken = $('input[name="csrf_token"]').val()
+//         var dict = {"last": e.target.id}
+//         var json = JSON.stringify(dict)
+//         console.log(json)
+
+//            $.ajax({
+//               url: `player`,
+//               headers: {'X-CSRFToken': csrfToken},
+//               dataType: 'json',
+//               data: json,
+//               type: 'post',
+//               success: function(response) {
+//                 console.log(response)
+//                   window.location.href = response
+//               }
+//           })
+//     })
+// });
+
+
 const musicContainer = document.querySelectorAll('#music-container');
 const playBtn = document.querySelectorAll('#play');
 const prevBtn = document.querySelectorAll('#prev');
@@ -23,6 +47,15 @@ playBtn.forEach(btn => {
         }
 
     if (event.currentTarget.children[0].classList.contains('fa-play')) {
+
+      // Pause all other btns
+        playBtn.forEach(btn => {
+          if (btn.children[0].classList.contains('fa-pause')) {
+              btn.children[0].classList.remove('fa-pause')
+              btn.children[0].classList.add('fa-play')
+              }
+        })
+
       event.currentTarget.children[0].classList.remove('fa-play')
       event.currentTarget.children[0].classList.add('fa-pause')
       audio.play()

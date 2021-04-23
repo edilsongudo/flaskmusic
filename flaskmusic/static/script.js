@@ -1,4 +1,4 @@
-const musicContainer = document.getElementById('music-container');
+const musicContainer = document.getElementById('music-container2');
 const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
@@ -9,11 +9,9 @@ const progressContainer = document.getElementById('progress-container');
 const title = document.getElementById('title');
 const cover = document.getElementById('cover');
 
-// Song titles
-// const songs = ['summer', 'hey', 'ukulele'];
-
 // Keep track of song
-let songIndex = 0;
+
+var songIndex = 0
 
 // Initially load song details into DOM
 loadSong(songs[songIndex]);
@@ -30,6 +28,7 @@ function loadSong(song) {
   }
   // audio.src = `../static/music/${song}.mp3`;
     audio.src = `../static/music/${song}`; // flask sends the audio with the extension
+    audio.id = song
 
   // cover.src = `../static/images/${song}.jpg`;
 }
@@ -41,6 +40,26 @@ function playSong() {
   playBtn.querySelector('i.fas').classList.add('fa-pause');
 
   audio.play();
+
+    playBtns.forEach(btn => {
+
+    console.log(`${btn.parentElement.id}`)
+    console.log(audio.id)
+
+    if (`${btn.parentElement.id}` == audio.id) {
+
+      if (btn.children[0].classList.contains('fa-play')) {
+          btn.children[0].classList.remove('fa-play')
+          btn.children[0].classList.add('fa-pause')
+          }
+
+          } else {
+              btn.children[0].classList.remove('fa-pause')
+              btn.children[0].classList.add('fa-play')
+            }
+
+    })
+
 }
 
 // Pause song
@@ -117,3 +136,42 @@ progressContainer.addEventListener('click', setProgress);
 
 // Song ends
 audio.addEventListener('ended', nextSong);
+
+
+const playBtns = document.querySelectorAll('#play2');
+var currentPlaying = ""
+
+playBtns.forEach(btn => {
+  btn.addEventListener('click', event => {
+
+        if (currentPlaying == '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className) {
+          console.log('Already playing audio')
+        } else {
+          console.log('Changed')
+          loadSong(event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className)
+            currentPlaying = '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className
+            audio.src = '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className
+        }
+
+    if (event.currentTarget.children[0].classList.contains('fa-play')) {
+
+      // Pause all other btns
+        playBtns.forEach(btn => {
+          if (btn.children[0].classList.contains('fa-pause')) {
+              btn.children[0].classList.remove('fa-pause')
+              btn.children[0].classList.add('fa-play')
+              }
+        })
+
+      event.currentTarget.children[0].classList.remove('fa-play')
+      event.currentTarget.children[0].classList.add('fa-pause')
+      playSong()
+
+    } else {
+      event.currentTarget.children[0].classList.remove('fa-pause')
+      event.currentTarget.children[0].classList.add('fa-play')
+      pauseSong()
+    }
+
+  })
+})

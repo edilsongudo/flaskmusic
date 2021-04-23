@@ -11,72 +11,123 @@
 
 <body>
 
-<div class="file-upload">
-    <form method="POST" enctype="multipart/form-data">
-        {{ form.csrf_token }}
-        {{ form.music }}
+<div class="home">
+        <div class="file-upload">
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                {{ form.music }}
 
-        <label for="music">
-            <div class="navigation_bar">
-                <div class="pint_mock_icon_container add_pin">
-                    <img src="../static/pngs/add.png" alt="add_pin" class="pint_mock_icon">
-                </div>
-                <div id="file-chosen">No file choosen</div>
+                <label for="music">
+                    <div class="navigation_bar">
+                        <div class="pint_mock_icon_container add_pin">
+                            <img src="../static/pngs/add.png" alt="add_pin" class="pint_mock_icon">
+                        </div>
+                        <div id="file-chosen">No file choosen</div>
+                    </div>
+                </label>
+            </form>
+        </div>
+
+        <audio class="{{ song }}" src="../static/music/" id="audio"></audio>
+
+
+        <div style="margin-top: 100px;">
+
+            <button class="toggleplayer" style="background: pink">Player</button>
+
+
+            {% for song in songs %}
+            <div class="music-container" id="music-container">
+
+              <!-- <audio class="{{ song }}" src="../static/music/{{ song }}" id="audio"></audio> -->
+              <span class="{{ song }}" style="display: none;"></span>
+
+
+              <a class="img-container" id="{{ song }}" href="player/{{ song }}" style="color: white;">
+                <i class="fas fa-music" id="small"></i>
+              </a>
+
+              <a class="music-info" id="{{ song }}" href="player/{{ song }}" style="color: white;">
+                <marquee>{{ song }}</marquee>
+              </a>
+
+            <div class="navigation" id="{{ song }}">
+                <button id="play2" class="action-btn action-btn-big">
+                  <i class="fas fa-play"></i>
+                </button>
             </div>
-        </label>
-    </form>
+
+            </div>
+
+            {% endfor %}
+        </div>
+
 </div>
 
-<audio class="{{ song }}" src="../static/music/" id="audio"></audio>
+    <div class="player">
+
+            <h1>Music Player</h1>
 
 
-<div style="margin-top: 100px;">
-
-    {% for song in songs %}
-    <div class="music-container" id="music-container">
-
-      <!-- <audio class="{{ song }}" src="../static/music/{{ song }}" id="audio"></audio> -->
-      <span class="{{ song }}" style="display: none;"></span>
+            <button class="togglehome" style="background: pink">Home</button>
 
 
-      <div class="img-container">
-        <i class="fas fa-music" id="small"></i>
-      </div>
+            <div class="music-container2" id="music-container2">
 
-      <div class="music-info">
-        <marquee id="title">{{ song }}</marquee>
-      </div>
+              <div class="img-container">
+                <i id="player-fas-fa-music" class="fas fa-music"></i>
+              </div>
 
-    <div class="navigation">
-        <button id="prev" class="action-btn" style="display: none;">
-          <i class="fas fa-backward"></i>
-        </button>
-        <button id="play" class="action-btn action-btn-big">
-          <i class="fas fa-play"></i>
-        </button>
-        <button id="next" class="action-btn" style="display: none;">
-          <i class="fas fa-forward"></i>
-        </button>
+              <div class="music-info2">
+                <h4 id="title"></h4>
+                <div class="progress-container" id="progress-container">
+                  <div class="progress" id="progress"></div>
+                </div>
+              </div>
+
+              <div class="navigation2">
+
+                <button id="prev" class="action-btn">
+                  <i class="fas fa-backward" style="font-size: 24px;"></i>
+                </button>
+                <button id="play" class="action-btn action-btn-big">
+                  <i class="fas fa-play" style="font-size: 32px;"></i>
+                </button>
+                <button id="next" class="action-btn">
+                  <i class="fas fa-forward" style="font-size: 24px;"></i>
+                </button>
+              </div>
+
+            </div>
+
     </div>
 
-    <div class="progress-container" id="progress-container" style="display: none;">
-      <div class="progress" id="progress"></div>
-    </div>
+    <script type="text/javascript">
+        buttonplayer = document.querySelector('button.toggleplayer')
+        buttonhome = document.querySelector('button.togglehome')
+        player = document.querySelector('div.player')
+        list = document.querySelector('div.home')
+        buttonplayer.addEventListener('click', function () {
+            list.style.display = 'none'
+            player.style.display = 'block'
 
-    </div>
+        })
+        buttonhome.addEventListener('click', function () {
+            player.style.display = 'none'
+            list.style.display = 'block'
 
-    {% endfor %}
-</div>
+        })
+    </script>
 
     <script type="text/javascript" src="../static/layout.js"></script>
     <script src="../static/jquery.js"></script>
 
     <script type="text/javascript">
         const songs = {{ songs|safe }}
-        console.log(songs)
     </script>
 
-    <script src="../static/scripthome.js"></script>
+    <script src="../static/script.js"></script>
+
 
 </body>
 </html>
