@@ -9,6 +9,8 @@ const progressContainer = document.getElementById('progress-container');
 const title = document.getElementById('title');
 const artist = document.getElementById('artist')
 const cover = document.getElementById('cover');
+const currentTimeDiv = document.querySelector('.current')
+const durationDiv = document.querySelector('.duration')
 
 // Keep track of song
 var songIndex = 0
@@ -53,10 +55,18 @@ function playSong() {
 
   audio.play();
 
-    playBtns.forEach(btn => {
 
-    console.log(`${btn.parentElement.id}`)
-    console.log(audio.id)
+  const musicinfodivs = document.querySelectorAll('div.music-info')
+  musicinfodivs.forEach(mid => {
+    if (mid.id == audio.id) {
+      mid.style.color = '#ad444e' //'#c85d34'
+    } else {
+      mid.style.color = 'white'
+    }
+  })
+
+
+    playBtns.forEach(btn => {
 
     if (`${btn.parentElement.id}` == audio.id) {
 
@@ -124,6 +134,15 @@ function nextSong() {
 // Update progress bar
 function updateProgress(e) {
   const { duration, currentTime } = e.srcElement;
+
+  var minutes = Math.floor(currentTime / 60)
+  var seconds = Math.floor(currentTime % 60)
+  currentTimeDiv.innerHTML = `${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`
+
+  var minutes2 = Math.floor(duration / 60)
+  var seconds2 = Math.floor(duration % 60)
+  durationDiv.innerHTML = `${('0' + minutes2).slice(-2)}:${('0' + seconds2).slice(-2)}`
+
   const progressPercent = (currentTime / duration) * 100;
   progress.style.width = `${progressPercent}%`;
 }

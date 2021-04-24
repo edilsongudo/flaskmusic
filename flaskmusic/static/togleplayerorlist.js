@@ -14,14 +14,17 @@ buttonhome.addEventListener('click', function () {
 })
 
 const musicinfo = document.querySelectorAll('div.music-info')
-const imgcontainer = document.querySelectorAll('div.music-info')
+const imgcontainer = document.querySelectorAll('div.img-container')
 
 musicinfo.forEach(mc => {
     mc.addEventListener('click', function() {
         list.style.display = 'none'
         player.style.display = 'block'
-        loadSong(mc.id)
-        playSong()
+        if (audio.id != mc.id) {
+            loadSong(mc.id)
+            playSong()
+        }
+
     })
 })
 
@@ -29,7 +32,9 @@ imgcontainer.forEach(mc => {
     mc.addEventListener('click', function() {
         list.style.display = 'none'
         player.style.display = 'block'
-        longSong(mc.id)
-        playSong()
+        if (audio.id != mc.id) {
+            loadSong(mc.id)
+            playSong()
+        }
     })
 })

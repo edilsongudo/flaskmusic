@@ -33,7 +33,7 @@
 
         <div style="margin-top: 100px;">
 
-            <button class="toggleplayer" style="background: pink">Player</button>
+            <button class="toggleplayer" style="display: none;"></button>
 
 
             {% for song in songs %}
@@ -54,11 +54,11 @@
                     {% else %}
                         <span>{{ song.filename[0:20] }}{% if song.filename|length >= 20 %}...{% endif %}</span>
                     {% endif %}
-
+                    <br>
                     {% if song.artist is not none %}
-                        <p style="font-size: 12px;">{{ song.artist }}</p>
+                        <span style="font-size: 12px;">{{ song.artist }}</span>
                     {% else %}
-                        <p style="font-size: 12px;">Unknown Artist</p>
+                        <span style="font-size: 12px;">Unknown Artist</span>
                     {% endif %}
 
                 </div>
@@ -81,8 +81,7 @@
 
             <h1>Music Player</h1>
 
-
-            <button class="togglehome" style="background: pink">Home</button>
+            <div style="text-align: left; width: 300px; margin: 10px auto;"><button class="togglehome"><i class="fas fa-angle-left" style="font-size: 32px;"></i></button></div>
 
 
             <div class="music-container2" id="music-container2">
@@ -97,6 +96,11 @@
                 <div class="progress-container" id="progress-container">
                   <div class="progress" id="progress"></div>
                 </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span class="current" style="font-size: 10px;"></span>
+                    <span class="duration" style="font-size: 10px;"></span>
+                </div>
+
               </div>
 
               <div class="navigation2">
