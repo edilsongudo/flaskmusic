@@ -50,9 +50,9 @@
                 <div class="music-info" id="{{ song.filename }}" style="text-align: left;">
 
                     {% if song.title is not none %}
-                        <marquee>{{ song.title }}</marquee>
+                        <span>{{ song.title[0:20] }}{% if song.title|length >= 20 %}...{% endif %}</span>
                     {% else %}
-                        <marquee>{{ song.filename }}</marquee>
+                        <span>{{ song.filename[0:20] }}{% if song.filename|length >= 20 %}...{% endif %}</span>
                     {% endif %}
 
                     {% if song.artist is not none %}
