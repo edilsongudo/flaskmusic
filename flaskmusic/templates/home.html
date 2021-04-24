@@ -28,7 +28,7 @@
             </form>
         </div>
 
-        <audio class="{{ song }}" src="../static/music/" id="audio"></audio>
+        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio"></audio>
 
 
         <div style="margin-top: 100px;">
@@ -40,18 +40,25 @@
             <div class="music-container" id="music-container">
 
               <!-- <audio class="{{ song }}" src="../static/music/{{ song }}" id="audio"></audio> -->
-              <span class="{{ song }}" style="display: none;"></span>
+              <span class="{{ song.filename }}" style="display: none;"></span>
 
 
-              <a class="img-container" id="{{ song }}" href="player/{{ song }}" style="color: white;">
-                <i class="fas fa-music" id="small"></i>
-              </a>
+                <div class="img-container" id="{{ song.filename }}">
+                    <i class="fas fa-music" id="small"></i>
+                </div>
 
-              <a class="music-info" id="{{ song }}" href="player/{{ song }}" style="color: white;">
-                <marquee>{{ song }}</marquee>
-              </a>
+                <div class="music-info" id="{{ song.filename }}">
 
-            <div class="navigation" id="{{ song }}">
+                    {% if song.title is not none %}
+                        <marquee>{{ song.title }}</marquee>
+                    {% else %}
+                        <marquee>{{ song.filename }}</marquee>
+                    {% endif %}
+
+                </div>
+
+
+            <div class="navigation" id="{{ song.filename }}">
                 <button id="play2" class="action-btn action-btn-big">
                   <i class="fas fa-play"></i>
                 </button>
@@ -102,32 +109,15 @@
 
     </div>
 
-    <script type="text/javascript">
-        buttonplayer = document.querySelector('button.toggleplayer')
-        buttonhome = document.querySelector('button.togglehome')
-        player = document.querySelector('div.player')
-        list = document.querySelector('div.home')
-        buttonplayer.addEventListener('click', function () {
-            list.style.display = 'none'
-            player.style.display = 'block'
-
-        })
-        buttonhome.addEventListener('click', function () {
-            player.style.display = 'none'
-            list.style.display = 'block'
-
-        })
-    </script>
-
     <script type="text/javascript" src="../static/layout.js"></script>
     <script src="../static/jquery.js"></script>
 
     <script type="text/javascript">
-        const songs = {{ songs|safe }}
+        const songs = {{ songs | tojson | safe }}
     </script>
 
     <script src="../static/script.js"></script>
-
+    <script src="../static/togleplayerorlist.js"></script>
 
 </body>
 </html>

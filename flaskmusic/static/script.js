@@ -10,18 +10,23 @@ const title = document.getElementById('title');
 const cover = document.getElementById('cover');
 
 // Keep track of song
-
 var songIndex = 0
 
 // Initially load song details into DOM
-loadSong(songs[songIndex]);
+loadSong(songs[songIndex]['filename']);
 
 // Update song details
 function loadSong(song) {
 
-  const song_title = song.split('.').slice(0, -1).join('.')
+  const obj = songs.find(x => x.filename === song)
 
-  if (songs[songIndex].length > 25 ) {
+  if (obj['title'] != null) {
+    var song_title = obj['title']
+  } else {
+    var song_title = song
+  }
+
+  if (song_title.length > 25 ) {
         title.innerHTML = '<marquee behaviour="left" id="title">' + song_title + '</marquee>'
   } else {
       title.innerHTML = '<p id="title">' + song_title + '</p>'
@@ -51,6 +56,8 @@ function playSong() {
       if (btn.children[0].classList.contains('fa-play')) {
           btn.children[0].classList.remove('fa-play')
           btn.children[0].classList.add('fa-pause')
+          currentPlaying = '../static/music/' + audio.id
+
           }
 
           } else {
@@ -68,6 +75,16 @@ function pauseSong() {
   playBtn.querySelector('i.fas').classList.add('fa-play');
   playBtn.querySelector('i.fas').classList.remove('fa-pause');
 
+  playBtns.forEach(btn => {
+    if (`${btn.parentElement.id}` == audio.id) {
+
+      if (btn.children[0].classList.contains('fa-pause')) {
+          btn.children[0].classList.remove('fa-pause')
+          btn.children[0].classList.add('fa-play')
+          }
+    }
+  })
+
   audio.pause();
 }
 
@@ -79,7 +96,7 @@ function prevSong() {
     songIndex = songs.length - 1;
   }
 
-  loadSong(songs[songIndex]);
+  loadSong(songs[songIndex]['filename']);
 
   playSong();
 }
@@ -92,7 +109,7 @@ function nextSong() {
     songIndex = 0;
   }
 
-  loadSong(songs[songIndex]);
+  loadSong(songs[songIndex]['filename']);
 
   playSong();
 }
