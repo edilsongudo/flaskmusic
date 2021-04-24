@@ -43,16 +43,22 @@
               <span class="{{ song.filename }}" style="display: none;"></span>
 
 
-                <div class="img-container" id="{{ song.filename }}">
+                <div class="img-container" id="{{ song.filename }}" style="background-color: rgba(255, 255, 255, 0.3); padding: 8px;">
                     <i class="fas fa-music" id="small"></i>
                 </div>
 
-                <div class="music-info" id="{{ song.filename }}">
+                <div class="music-info" id="{{ song.filename }}" style="text-align: left;">
 
                     {% if song.title is not none %}
                         <marquee>{{ song.title }}</marquee>
                     {% else %}
                         <marquee>{{ song.filename }}</marquee>
+                    {% endif %}
+
+                    {% if song.artist is not none %}
+                        <p style="font-size: 12px;">{{ song.artist }}</p>
+                    {% else %}
+                        <p style="font-size: 12px;">Unknown Artist</p>
                     {% endif %}
 
                 </div>
@@ -81,12 +87,13 @@
 
             <div class="music-container2" id="music-container2">
 
-              <div class="img-container">
+              <div class="img-container" style="background-color: rgba(255,255,255, 0.3); padding: 20px;">
                 <i id="player-fas-fa-music" class="fas fa-music"></i>
               </div>
 
               <div class="music-info2">
                 <h4 id="title"></h4>
+                <p style="font-size: 12px;" id="artist"></p>
                 <div class="progress-container" id="progress-container">
                   <div class="progress" id="progress"></div>
                 </div>

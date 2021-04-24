@@ -7,6 +7,7 @@ const audio = document.getElementById('audio');
 const progress = document.getElementById('progress');
 const progressContainer = document.getElementById('progress-container');
 const title = document.getElementById('title');
+const artist = document.getElementById('artist')
 const cover = document.getElementById('cover');
 
 // Keep track of song
@@ -24,6 +25,12 @@ function loadSong(song) {
     var song_title = obj['title']
   } else {
     var song_title = song
+  }
+
+  if (obj['artist'] != null) {
+    artist.innerText = obj['artist']
+  } else {
+    artist.innerText = 'Unknown Artist'
   }
 
   if (song_title.length > 25 ) {
