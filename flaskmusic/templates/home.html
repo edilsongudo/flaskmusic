@@ -43,8 +43,10 @@
               <span class="{{ song.filename }}" style="display: none;"></span>
 
 
-                <div class="img-container2" id="{{ song.filename }}" style="padding: 8px;">
-                    <span><i class="fas fa-music" id="small"></i></span>
+                <div class="img-container2" id="{{ song.filename }}" style="padding: 8px;{% if song.artwork != '' %}background-image:url(../static/albumarts/{{ song.artwork }});{% endif %}">
+                    {% if song.artwork == "" %}
+                    <span><i class="fas fa-music"></i></span>
+                    {% endif %}
                 </div>
 
                 <div class="music-info" id="{{ song.filename }}" style="text-align: left;">
@@ -85,7 +87,7 @@
             <div class="music-container" id="music-container">
 
                 <div class="img-container2" id="footer-img" style="padding: 8px;">
-                    <i class="fas fa-music" id="small"></i>
+                    <span><i class="fas fa-music" id="small"></i></span>
                 </div>
                 <div class="music-info" id="footer-music" style="text-align: left;">
                     {% if songs[0].title != '' %}

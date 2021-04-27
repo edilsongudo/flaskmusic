@@ -67,7 +67,20 @@ function loadSong(song) {
     audio.src = `../static/music/${song}`;
     audio.id = song
 
-  // cover.src = `../static/images/${song}.jpg`;
+  const cover = document.querySelector('.img-container')
+  const playericon = document.querySelector('#player-fas-fa-music')
+  const footerimg = document.querySelector('#footer-img')
+
+  if (obj['artwork'] != "") {
+    playericon.style.opacity = '0'
+    cover.style.backgroundImage = `url(../static/albumarts/${obj['artwork']}`
+    footerimg.style.backgroundImage = `url(../static/albumarts/${obj['artwork']}`
+  } else {
+    playericon.style.opacity = '1'
+    cover.style.backgroundImage = ``
+    footerimg.style.backgroundImage = ``
+  }
+
 }
 
 // Play song

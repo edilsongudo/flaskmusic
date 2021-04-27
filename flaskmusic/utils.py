@@ -21,10 +21,12 @@ def get_meta(folder, album_dest, file):
         filename = file.split('.')[0] + '.jpg'
         with open(f'{album_dest}/{filename}', 'wb') as f:
             f.write(image_data)
+            artwork = filename
     except Exception as e:
         print(e)
+        artwork = ""
 
-    return {'album': meta['album'].value, 'artist': meta['artist'].value, 'title': meta['tracktitle'].value, 'filename': file}
+    return {'album': meta['album'].value, 'artist': meta['artist'].value, 'title': meta['tracktitle'].value, 'filename': file, 'artwork': artwork}
 
 
 def get_meta_old(folder, file):
