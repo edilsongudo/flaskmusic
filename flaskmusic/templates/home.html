@@ -28,7 +28,7 @@
             </form>
         </div>
 
-        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio"></audio>
+        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio" preload="metadata"></audio>
 
 
         <div style="margin-top: 100px;">
@@ -43,22 +43,22 @@
               <span class="{{ song.filename }}" style="display: none;"></span>
 
 
-                <div class="img-container" id="{{ song.filename }}" style="background-color: rgba(255, 255, 255, 0.3); padding: 8px;">
-                    <i class="fas fa-music" id="small"></i>
+                <div class="img-container2" id="{{ song.filename }}" style="padding: 8px;">
+                    <span><i class="fas fa-music" id="small"></i></span>
                 </div>
 
                 <div class="music-info" id="{{ song.filename }}" style="text-align: left;">
 
-                    {% if song.title is not none %}
+                    {% if song.title != '' %}
                         <span>{{ song.title[0:20] }}{% if song.title|length >= 20 %}...{% endif %}</span>
                     {% else %}
                         <span>{{ song.filename[0:20] }}{% if song.filename|length >= 20 %}...{% endif %}</span>
                     {% endif %}
                     <br>
-                    {% if song.artist is not none %}
-                        <span style="font-size: 12px;">{{ song.artist }}</span>
+                    {% if song.artist != '' %}
+                        <span style="font-size: 12px; color: rgba(255,255,255, 0.7);">{{ song.artist }}</span>
                     {% else %}
-                        <span style="font-size: 12px;">Unknown Artist</span>
+                        <span style="font-size: 12px; color: rgba(255,255,255, 0.7)">Unknown Artist</span>
                     {% endif %}
 
                 </div>
@@ -66,7 +66,12 @@
 
             <div class="navigation" id="{{ song.filename }}">
                 <button id="play2" class="action-btn action-btn-big">
-                  <i class="fas fa-play"></i>
+                  <i class="fas fa-ellipsis-v" style="font-size: 14px;">
+                      <div class="dropdownsong" style="position: absolute; background: black; padding: 20px; display: none;">
+                        <p><a>Delete Song</a></p>
+                        <p><a>Edit</a></p>
+                      </div>
+                  </i>
                 </button>
             </div>
 
@@ -75,18 +80,56 @@
             {% endfor %}
         </div>
 
+        <!-- Footer -->
+        <div class="footer">
+            <div class="music-container" id="music-container">
+
+                <div class="img-container2" style="padding: 8px;">
+                    <i class="fas fa-music" id="small"></i>
+                </div>
+                <div class="music-info" style="text-align: left;">
+                    {% if songs[0].title != '' %}
+                        <span id="footersong">{{ songs[0].title[0:20] }}{% if songs[0].title|length >= 20 %}...{% endif %}</span>
+                    {% else %}
+                        <span id="footersong">{{ songs[0].filename[0:20] }}{% if songs[0].filename|length >= 20 %}...{% endif %}</span>
+                    {% endif %}
+                    <br>
+                    {% if songs[0].artist != '' %}
+                        <span id="footerartist" style="font-size: 12px;">{{ songs[0].artist }}</span>
+                    {% else %}
+                        <span id="footerartist" style="font-size: 12px;">Unknown Artist</span>
+                    {% endif %}
+                </div>
+                <div class="navigation">
+                    <button id="playbtnfooter" class="action-btn action-btn-big">
+                      <i class="fas fa-play" id="footericon"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
 </div>
 
     <div class="player">
 
-            <h1>Music Player</h1>
+            <h1 style="opacity: 0;">Music Player</h1>
 
-            <div style="text-align: left; width: 300px; margin: 10px auto;"><button class="togglehome"><i class="fas fa-angle-left" style="font-size: 32px;"></i></button></div>
+            <div style="display: flex; justify-content: space-between; width: 300px; margin: 10px auto;">
 
+                <button class="togglehome">
+                    <i class="fas fa-angle-left" style="font-size: 32px;"></i>
+                </button>
+
+                <button class="togglelyrics" onclick="showlyrics()" style="opacity: 0;">
+                    <i class="fas fa-align-left" style="font-size: 24px;"></i>
+                </button>
+
+            </div>
 
             <div class="music-container2" id="music-container2">
 
-              <div class="img-container" style="background-color: rgba(255,255,255, 0.3); padding: 20px;">
+              <div class="img-container" style="padding: 20px;">
                 <i id="player-fas-fa-music" class="fas fa-music"></i>
               </div>
 
@@ -118,6 +161,17 @@
 
             </div>
 
+    </div>
+
+
+
+    <div class="lyrics">
+        <button onclick="closelyrics()">
+            <i class="fas fa-times" id="closelyrics" style="font-size: 24px;"></i>
+        </button>
+            <div class="lyricstextcontainer" style="max-width: 300px; text-align: left; margin: 50px auto; font-size: 20px;">
+
+            </div>
     </div>
 
     <script type="text/javascript" src="../static/layout.js"></script>

@@ -1,7 +1,8 @@
 import requests
 from musixmatch import Musixmatch
-from tinytag import TinyTag
+# from tinytag import TinyTag
 import os
+import music_tag
 
 
 def return_secret():
@@ -10,9 +11,26 @@ def return_secret():
         return musixmatch_api_key
 
 
-def get_meta(folder, file):
+def get_meta(folder, album_dest, file):
+
+    song = os.path.join(f'{folder}/{file}')
+    meta = music_tag.load_file(song)
+
+    try:
+        image_data = meta['artwork'].first.data
+        filename = file.split('.')[0] + '.jpg'
+        with open(f'{album_dest}/{filename}', 'wb') as f:
+            f.write(image_data)
+    except Exception as e:
+        print(e)
+
+    return {'album': meta['album'].value, 'artist': meta['artist'].value, 'title': meta['tracktitle'].value, 'filename': file}
+
+
+def get_meta_old(folder, file):
     song = os.path.join(folder, file)
     tag = TinyTag.get(song)
+    print(tag)
     return {'album': tag.album, 'artist': tag.artist, 'title': tag.title, 'filename': file}
 
 
@@ -23,7 +41,7 @@ def get_lyrics():
     return r.json()
 
 
-def get_lyrics_musixmatch(api_key=return_secret(), q_artist='', q_track='meaning'):
+def get_lyrics_musixmatch(api_key=return_secret(), q_artist='neovaii', q_track='meaning'):
     musixmatch = Musixmatch(api_key)
     result = musixmatch.track_search(q_artist=q_artist, q_track=q_track,
                                      page_size=10, page=1, s_track_rating='desc')
@@ -32,6 +50,8 @@ def get_lyrics_musixmatch(api_key=return_secret(), q_artist='', q_track='meaning
 
     lyrics = musixmatch.track_lyrics_get(
         track_id)['message']['body']['lyrics']['lyrics_body']
+
+    lyrics = lyrics.replace('\n', '<br>')
 
     return lyrics
 

@@ -1,10 +1,9 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, jsonify, request
 from flaskmusic import app
 from flaskmusic.forms import MusicForm
-from flask import request
 from werkzeug import secure_filename
 from flask_uploads import configure_uploads, AUDIO, UploadSet
-from flaskmusic.utils import get_meta
+from flaskmusic.utils import get_meta, get_lyrics_musixmatch
 import os
 import json
 
@@ -15,11 +14,13 @@ configure_uploads(app, audios)
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    meta = []
+    metadata = []
     songs = os.listdir(app.config['UPLOADED_AUDIOS_DEST'])
     for song in songs:
-        meta.append(
-            get_meta(folder=app.config['UPLOADED_AUDIOS_DEST'], file=song))
+        a = get_meta(app.config['UPLOADED_AUDIOS_DEST'],
+                     app.config['ALBUM_ART_DEST'], song)
+        # print(a)
+        metadata.append(a)
 
     form = MusicForm()
     if form.validate_on_submit():
@@ -32,4 +33,14 @@ def home():
         except:
             flash('Only audios allowed', 'danger')
             return redirect('/')
-    return render_template('home.html', form=form, songs=meta)
+    return render_template('home.html', form=form, songs=metadata)
+
+
+@app.route("/lyrics", methods=['GET', 'POST'])
+def return_lyrics():
+    if request.method == 'POST':
+        data = request.get_json()
+        lyrics = get_lyrics_musixmatch(
+            q_artist=data['artist'], q_track=data['song'])
+        return jsonify({"lyrics": lyrics})
+    return jsonify({"status_code": "ok"})

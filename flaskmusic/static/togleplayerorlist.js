@@ -2,6 +2,7 @@ const buttonplayer = document.querySelector('button.toggleplayer')
 const buttonhome = document.querySelector('button.togglehome')
 const player = document.querySelector('div.player')
 const list = document.querySelector('div.home')
+
 buttonplayer.addEventListener('click', function () {
     list.style.display = 'none'
     player.style.display = 'block'
@@ -38,3 +39,12 @@ imgcontainer.forEach(mc => {
         }
     })
 })
+
+function showlyrics() {
+    document.querySelector('.lyrics').style.display = 'block'
+}
+
+function closelyrics() {
+    document.querySelector('.lyrics').style.display = 'none'
+
+}
