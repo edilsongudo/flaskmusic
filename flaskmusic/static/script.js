@@ -28,17 +28,17 @@ loadSong(songs[songIndex]['filename']);
 const footericon = document.querySelector('i#footericon')
 const footerplay = document.querySelector('button#playbtnfooter')
 
-// footerplay.addEventListener('click', function() {
-//     if (footericon.classList.contains('fa-play')) {
-//         footericon.classList.remove('fa-play')
-//         footericon.classList.add('fa-pause')
-//         playSong()
-//     } else {
-//         footericon.classList.remove('fa-pause')
-//         footericon.classList.add('fa-play')
-//         pauseSong()
-//     }
-// })
+footerplay.addEventListener('click', function() {
+    if (footericon.classList.contains('fa-play')) {
+        footericon.classList.remove('fa-play')
+        footericon.classList.add('fa-pause')
+        playSong()
+    } else {
+        footericon.classList.remove('fa-pause')
+        footericon.classList.add('fa-play')
+        pauseSong()
+    }
+})
 
 
 // Update song details
