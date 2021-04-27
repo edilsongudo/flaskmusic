@@ -64,8 +64,7 @@ function loadSong(song) {
   } else {
       title.innerHTML = '<p id="title">' + song_title + '</p>'
   }
-  // audio.src = `../static/music/${song}.mp3`;
-    audio.src = `../static/music/${song}`; // flask sends the audio with the extension
+    audio.src = `../static/music/${song}`;
     audio.id = song
 
   // cover.src = `../static/images/${song}.jpg`;
@@ -102,28 +101,6 @@ function playSong() {
             footerartistPlaying.innerText = 'Unknown Artist'
           }
 
-          // document.querySelector('.togglelyrics').style.opacity = '0'
-          // //get lyrics from song
-          // if (obj['title'] != "" && obj['artist'] != "") {
-          //     const dict = {"song": obj['title'], "artist": obj['artist']}
-          //     const json = JSON.stringify(dict)
-
-          //      $.ajax({
-          //         url: '/lyrics',
-          //         // headers: {'X-CSRFToken': csrfToken},
-          //         dataType: 'json',
-          //         data: json,
-          //         type: 'POST',
-          //         contentType: "application/json",
-          //         success: function(response) {
-          //           document.querySelector('.togglelyrics').style.opacity = '1'
-          //           lyricsdivcontainer.innerHTML = response['lyrics']
-          //         }
-          //     })
-          //     } else {
-          //           lyricsdivcontainer.innerHTML = 'This song does not have enough metadata to help us search lyrics :('
-          //     }
-
 
   const musicinfodivs = document.querySelectorAll('div.music-info')
   musicinfodivs.forEach(mid => {
@@ -135,28 +112,6 @@ function playSong() {
   })
 
 
-    // playBtns.forEach(btn => {
-
-    // if (`${btn.parentElement.id}` == audio.id) {
-
-    //   if (btn.children[0].classList.contains('fa-play')) {
-    //       btn.children[0].classList.remove('fa-play')
-    //       btn.children[0].classList.add('fa-pause')
-    //       currentPlaying = '../static/music/' + audio.id
-
-    //       }
-
-    //       } else {
-
-    //         if (btn.children[0].id != 'footerbutton') {
-    //             btn.children[0].classList.remove('fa-pause')
-    //             btn.children[0].classList.add('fa-play')
-    //           }
-
-    //         }
-
-    // })
-
 }
 
 // Pause song
@@ -164,16 +119,6 @@ function pauseSong() {
   musicContainer.classList.remove('play');
   playBtn.querySelector('i.fas').classList.add('fa-play');
   playBtn.querySelector('i.fas').classList.remove('fa-pause');
-
-  // playBtns.forEach(btn => {
-  //   if (`${btn.parentElement.id}` == audio.id) {
-
-  //     if (btn.children[0].classList.contains('fa-pause')) {
-  //         btn.children[0].classList.remove('fa-pause')
-  //         btn.children[0].classList.add('fa-play')
-  //         }
-  //   }
-  // })
 
   audio.pause();
 
@@ -257,42 +202,3 @@ progressContainer.addEventListener('click', setProgress);
 
 // Song ends
 audio.addEventListener('ended', nextSong);
-
-
-// const playBtns = document.querySelectorAll('#play2');
-// var currentPlaying = ""
-
-// playBtns.forEach(btn => {
-//   btn.addEventListener('click', event => {
-
-//         if (currentPlaying == '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className) {
-//           console.log('Already playing audio')
-//         } else {
-//           console.log('Changed')
-//           loadSong(event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className)
-//             currentPlaying = '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className
-//             audio.src = '../static/music/' + event.currentTarget.parentElement.parentElement.childNodes.item('span').nextElementSibling.className
-//         }
-
-//     if (event.currentTarget.children[0].classList.contains('fa-play')) {
-
-//       // Pause all other btns
-//         playBtns.forEach(btn => {
-//           if (btn.children[0].classList.contains('fa-pause')) {
-//               btn.children[0].classList.remove('fa-pause')
-//               btn.children[0].classList.add('fa-play')
-//               }
-//         })
-
-//       event.currentTarget.children[0].classList.remove('fa-play')
-//       event.currentTarget.children[0].classList.add('fa-pause')
-//       playSong()
-
-//     } else {
-//       event.currentTarget.children[0].classList.remove('fa-pause')
-//       event.currentTarget.children[0].classList.add('fa-play')
-//       pauseSong()
-//     }
-
-//   })
-// })

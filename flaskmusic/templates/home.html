@@ -28,7 +28,7 @@
             </form>
         </div>
 
-        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio" preload="metadata"></audio>
+        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio"></audio>
 
 
         <div style="margin-top: 100px;">
@@ -84,10 +84,10 @@
         <div class="footer">
             <div class="music-container" id="music-container">
 
-                <div class="img-container2" style="padding: 8px;">
+                <div class="img-container2" id="footer-img" style="padding: 8px;">
                     <i class="fas fa-music" id="small"></i>
                 </div>
-                <div class="music-info" style="text-align: left;">
+                <div class="music-info" id="footer-music" style="text-align: left;">
                     {% if songs[0].title != '' %}
                         <span id="footersong">{{ songs[0].title[0:20] }}{% if songs[0].title|length >= 20 %}...{% endif %}</span>
                     {% else %}
@@ -181,7 +181,7 @@
         const songs = {{ songs | tojson | safe }}
     </script>
 
-    <script src="../static/script.js"></script>
+    <script src="../static/script2.js"></script>
     <script src="../static/togleplayerorlist.js"></script>
 
 </body>
