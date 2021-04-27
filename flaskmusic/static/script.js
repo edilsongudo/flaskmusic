@@ -44,15 +44,15 @@ const footerplay = document.querySelector('button#playbtnfooter')
 // Update song details
 function loadSong(song) {
 
-  const obj = songs.find(x => x.filename === song)
+  var obj = songs.find(x => x.filename === song)
 
-  if (obj['title'] != null) {
+  if (obj['title'] != "") {
     var song_title = obj['title']
   } else {
-    var song_title = song
+    var song_title = obj['filename']
   }
 
-  if (obj['artist'] != null) {
+  if (obj['artist'] != "") {
     artist.innerText = obj['artist']
   } else {
     artist.innerText = 'Unknown Artist'
@@ -86,7 +86,7 @@ function playSong() {
           }
 
 
-          if (obj['title'] != null) {
+          if (obj['title'] != "") {
             footersongPlaying.innerText = obj['title']
           } else {
             footersongPlaying.innerText = obj['filename']
@@ -95,7 +95,7 @@ function playSong() {
             }
           }
 
-          if (obj['artist'] != null) {
+          if (obj['artist'] != "") {
             footerartistPlaying.innerText = obj['artist']
           } else {
             footerartistPlaying.innerText = 'Unknown Artist'
@@ -103,7 +103,7 @@ function playSong() {
 
           // document.querySelector('.togglelyrics').style.opacity = '0'
           // //get lyrics from song
-          // if (obj['title'] != null && obj['artist'] != null) {
+          // if (obj['title'] != "" && obj['artist'] != "") {
           //     const dict = {"song": obj['title'], "artist": obj['artist']}
           //     const json = JSON.stringify(dict)
 
