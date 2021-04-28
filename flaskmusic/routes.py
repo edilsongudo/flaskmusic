@@ -44,3 +44,9 @@ def return_lyrics():
             q_artist=data['artist'], q_track=data['song'])
         return jsonify({"lyrics": lyrics})
     return jsonify({"status_code": "ok"})
+
+
+@app.route("/delete/<song>")
+def deletesong(song):
+    os.remove(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], song))
+    return redirect('/')

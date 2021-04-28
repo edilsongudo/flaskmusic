@@ -67,14 +67,16 @@
 
 
             <div class="navigation" id="{{ song.filename }}">
-                <button id="play2" class="action-btn action-btn-big">
-                  <i class="fas fa-ellipsis-v" style="font-size: 14px;">
-                      <div class="dropdownsong" style="position: absolute; background: black; padding: 20px; display: none;">
-                        <p><a>Delete Song</a></p>
-                        <p><a>Edit</a></p>
-                      </div>
-                  </i>
+                <button id="options" class="action-btn action-btn-big" style="width: 50px; height: 50px;">
+                  <i class="fas fa-ellipsis-v" style="font-size: 14px;"></i>
                 </button>
+
+              <div class="dropdownsong" id="{{ song.filename }}">
+                <button onclick="closedropdown()">
+                    <i class="fas fa-times" id="closelyrics" style="font-size: 24px;"></i>
+                </button>
+                    <li><a href="/delete/{{ song.filename }}">Delete Song</a></li>
+              </div>
             </div>
 
             </div>
@@ -183,7 +185,7 @@
         const songs = {{ songs | tojson | safe }}
     </script>
 
-    <script src="../static/script2.js"></script>
+    <script src="../static/home.js"></script>
     <script src="../static/togleplayerorlist.js"></script>
 
 </body>

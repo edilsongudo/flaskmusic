@@ -50,3 +50,22 @@ function closelyrics() {
     document.querySelector('.lyrics').style.display = 'none'
 
 }
+
+
+optionsbtn = document.querySelectorAll('#options')
+
+optionsbtn.forEach(btn => {
+    btn.addEventListener('click', function() {
+        this.parentElement.childNodes[3].classList.toggle('visible')
+        audio.pause()
+})
+})
+
+function closedropdown(e) {
+    dd = document.querySelectorAll('.dropdownsong')
+    dd.forEach(d => {
+        d.classList.remove('visible')
+        audio.play()
+    })
+
+}

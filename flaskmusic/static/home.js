@@ -66,6 +66,8 @@ function loadSong(song) {
   }
     audio.src = `../static/music/${song}`;
     audio.id = song
+    songIndex = songs.indexOf(obj)
+    console.log(songIndex)
 
   const cover = document.querySelector('.img-container')
   const playericon = document.querySelector('#player-fas-fa-music')

@@ -183,7 +183,7 @@ padding: 15px; display: block;
 }
 
 
-.lyrics {
+.lyrics, .dropdownsong {
 z-index: 1;
 position: fixed;
 top: 0;
@@ -209,4 +209,27 @@ background: #29323c;
 
 button {
   outline: none;
+}
+
+.dropdownsong {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+ul, li {
+  list-style: none;
+  margin-top: 30px;
+  font-size: 32px;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover {
+  color: lightblue;
 }
