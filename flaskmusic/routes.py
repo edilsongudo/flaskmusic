@@ -3,7 +3,7 @@ from flaskmusic import app
 from flaskmusic.forms import MusicForm
 from werkzeug import secure_filename
 from flask_uploads import configure_uploads, AUDIO, UploadSet
-from flaskmusic.utils import get_meta, get_lyrics_musixmatch
+from flaskmusic.utils import *
 import os
 import json
 
@@ -33,17 +33,17 @@ def home():
         except:
             flash('Only audios allowed', 'danger')
             return redirect('/')
-    return render_template('home.html', form=form, songs=metadata)
+    return render_template('player.html', form=form, songs=metadata)
 
 
-@app.route("/lyrics", methods=['GET', 'POST'])
-def return_lyrics():
-    if request.method == 'POST':
-        data = request.get_json()
-        lyrics = get_lyrics_musixmatch(
-            q_artist=data['artist'], q_track=data['song'])
-        return jsonify({"lyrics": lyrics})
-    return jsonify({"status_code": "ok"})
+# @app.route("/lyrics", methods=['GET', 'POST'])
+# def return_lyrics():
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         lyrics = get_lyrics_musixmatch(
+#             q_artist=data['artist'], q_track=data['song'])
+#         return jsonify({"lyrics": lyrics})
+#     return jsonify({"status_code": "ok"})
 
 
 @app.route("/delete/<song>")
