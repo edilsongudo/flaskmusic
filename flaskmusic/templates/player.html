@@ -28,7 +28,9 @@
             </form>
         </div>
 
-        <audio class="{{ songs[0].filename }}" src="../static/music/" id="audio"></audio>
+        {% if songs|length >= 1 %}
+            <audio class="{{ songs[0].filename }}" src="../static/music/{{ user }}" id="audio"></audio>
+        {% endif %}
 
 
         <div style="margin-top: 100px;">
@@ -43,7 +45,7 @@
               <span class="{{ song.filename }}" style="display: none;"></span>
 
 
-                <div class="img-container2" id="{{ song.filename }}" style="padding: 8px;{% if song.artwork != '' %}background-image:url(../static/albumarts/{{ song.artwork }});{% endif %}">
+                <div class="img-container2" id="{{ song.filename }}" style="padding: 8px;{% if song.artwork != '' %}background-image:url(../static/albumarts/{{ user }}/{{ song.artwork }});{% endif %}">
                     {% if song.artwork == "" %}
                     <span><i class="fas fa-music"></i></span>
                     {% endif %}
@@ -75,7 +77,7 @@
                 <button onclick="closedropdown()">
                     <i class="fas fa-times" id="closelyrics" style="font-size: 24px;"></i>
                 </button>
-                    <li><a href="/delete/{{ song.filename }}">Delete Song</a></li>
+                    <li><a href="/delete/{{ user }}/{{ song.filename }}">Delete Song</a></li>
               </div>
             </div>
 
@@ -92,16 +94,18 @@
                     <span><i class="fas fa-music" id="small"></i></span>
                 </div>
                 <div class="music-info" id="footer-music" style="text-align: left;">
-                    {% if songs[0].title != '' %}
-                        <span id="footersong">{{ songs[0].title[0:20] }}{% if songs[0].title|length >= 20 %}...{% endif %}</span>
-                    {% else %}
-                        <span id="footersong">{{ songs[0].filename[0:20] }}{% if songs[0].filename|length >= 20 %}...{% endif %}</span>
-                    {% endif %}
-                    <br>
-                    {% if songs[0].artist != '' %}
-                        <span id="footerartist" style="font-size: 12px;">{{ songs[0].artist }}</span>
-                    {% else %}
-                        <span id="footerartist" style="font-size: 12px;">Unknown Artist</span>
+                    {% if songs|length >= 1  %}
+                        {% if songs[0].title != '' %}
+                            <span id="footersong">{{ songs[0].title[0:20] }}{% if songs[0].title|length >= 20 %}...{% endif %}</span>
+                        {% else %}
+                            <span id="footersong">{{ songs[0].filename[0:20] }}{% if songs[0].filename|length >= 20 %}...{% endif %}</span>
+                        {% endif %}
+                        <br>
+                        {% if songs[0].artist != '' %}
+                            <span id="footerartist" style="font-size: 12px;">{{ songs[0].artist }}</span>
+                        {% else %}
+                            <span id="footerartist" style="font-size: 12px;">Unknown Artist</span>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="navigation">
@@ -180,6 +184,7 @@
 
     <script type="text/javascript">
         const songs = {{ songs | tojson | safe }}
+        const user = "{{ user }}"
     </script>
 
     <script src="../static/player/player.js"></script>

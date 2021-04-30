@@ -3,46 +3,51 @@ from flaskmusic import app, db, bcrypt
 from flaskmusic.forms import *
 from flaskmusic.models import *
 from werkzeug import secure_filename
-from flask_uploads import configure_uploads, AUDIO, UploadSet
 from flaskmusic.utils import *
 import os
 import json
 import secrets
 from PIL import Image
 from flask_login import login_user, current_user, logout_user, login_required
-
-
-audios = UploadSet('audios', ("mp3", "m4a", "aac"))
-configure_uploads(app, audios)
-
+import random
 
 @app.route('/explore')
 def explore():
     return render_template('explore.html')
 
 
-@app.route("/", methods=['GET', 'POST'])
-def home():
+@app.route("/<user>", methods=['GET', 'POST'])
+@login_required
+def home(user):
+
+    if not os.path.isdir(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user)):
+        os.mkdir(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user))
+    if not os.path.isdir(os.path.join(app.config['ALBUM_ART_DEST'], user)):
+        os.mkdir(os.path.join(app.config['ALBUM_ART_DEST'], user))
+
     metadata = []
-    songs = os.listdir(app.config['UPLOADED_AUDIOS_DEST'])
+    songs = os.listdir(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user))
     for song in songs:
-        a = get_meta(app.config['UPLOADED_AUDIOS_DEST'],
-                     app.config['ALBUM_ART_DEST'], song)
+        a = get_meta(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user),
+                     os.path.join(app.config['ALBUM_ART_DEST'], user), song)
         # print(a)
         metadata.append(a)
 
     form = MusicForm()
+
     if form.validate_on_submit():
-        try:
-            for file in form.music.data:
-                file_filename = secure_filename(file.filename)
-                audios.save(file)
-            flash('Uploaded Sucessfully', 'success')
-            return redirect('/')
-        except:
-            flash('Only audios allowed', 'danger')
-            return redirect('/')
-    return render_template('player.html', form=form, songs=metadata)
+        for file in form.music.data:
+            file_filename = secure_filename(file.filename)
+            ext = file.filename.split('.')[-1]
+            if ext in ("mp3", "m4a", "aac"):
+                file.save(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], f'{user}/{file_filename}'))
+                flash('Uploaded Sucessfully', 'success')
+                return redirect(url_for('home', user=user, form=form, songs=metadata))
+            else:
+                flash('Only audios allowed', 'danger')
+                return redirect(url_for('home', user=user, form=form, songs=metadata))
+
+    return render_template('player.html', form=form, songs=metadata, user=user)
 
 
 # @app.route("/lyrics", methods=['GET', 'POST'])
@@ -55,11 +60,17 @@ def home():
 #     return jsonify({"status_code": "ok"})
 
 
-@app.route("/delete/<song>")
-def deletesong(song):
-    os.remove(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], song))
-    return redirect('/')
-
+@app.route("/delete/<user>/<song>")
+def deletesong(user, song):
+    os.remove(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], f'{user}/{song}'))
+    form = MusicForm()
+    metadata = []
+    songs = os.listdir(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user))
+    for song in songs:
+        a = get_meta(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user),
+                     os.path.join(app.config['ALBUM_ART_DEST'], user), song)
+        metadata.append(a)
+    return redirect(url_for('home', user=user, form=form, songs=metadata))
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -68,8 +79,10 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
+        user = User(username=form.username.data,
+                    email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -103,7 +116,8 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(
+        app.root_path, 'static/profile_pics', picture_fn)
 
     output_size = (125, 125)
     i = Image.open(form_picture)
@@ -129,6 +143,7 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for(
+        'static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)

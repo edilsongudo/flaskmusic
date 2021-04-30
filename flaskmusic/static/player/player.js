@@ -64,7 +64,7 @@ function loadSong(song) {
   } else {
       title.innerHTML = '<p id="title">' + song_title + '</p>'
   }
-    audio.src = `../static/music/${song}`;
+    audio.src = `../static/music/${user}/${song}`;
     audio.id = song
     songIndex = songs.indexOf(obj)
     console.log(songIndex)
@@ -75,8 +75,8 @@ function loadSong(song) {
 
   if (obj['artwork'] != "") {
     playericon.style.opacity = '0'
-    cover.style.backgroundImage = `url(../static/albumarts/${obj['artwork']}`
-    footerimg.style.backgroundImage = `url(../static/albumarts/${obj['artwork']}`
+    cover.style.backgroundImage = `url(../static/albumarts/${user}/${obj['artwork']}`
+    footerimg.style.backgroundImage = `url(../static/albumarts/${user}/${obj['artwork']}`
   } else {
     playericon.style.opacity = '1'
     cover.style.backgroundImage = ``
