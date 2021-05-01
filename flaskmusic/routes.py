@@ -11,12 +11,18 @@ from PIL import Image
 from flask_login import login_user, current_user, logout_user, login_required
 import random
 
-@app.route('/explore')
-def explore():
-    return render_template('explore.html')
+@app.route('/users')
+def users():
+    return render_template('users2.html')
 
+@app.route('/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    image_file = url_for(
+        'static', filename='profile_pics/' + user.image_file)
+    return render_template('user.html', image_file=image_file, user=user)
 
-@app.route("/<user>", methods=['GET', 'POST'])
+@app.route("/<user>/player", methods=['GET', 'POST'])
 @login_required
 def home(user):
 
@@ -30,7 +36,6 @@ def home(user):
     for song in songs:
         a = get_meta(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user),
                      os.path.join(app.config['ALBUM_ART_DEST'], user), song)
-        # print(a)
         metadata.append(a)
 
     form = MusicForm()
@@ -41,6 +46,15 @@ def home(user):
             ext = file.filename.split('.')[-1]
             if ext in ("mp3", "m4a", "aac"):
                 file.save(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], f'{user}/{file_filename}'))
+
+                a = get_meta(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user),
+                             os.path.join(app.config['ALBUM_ART_DEST'], user), file_filename)
+
+                song_record = Song(song_filename=file.filename, author=current_user)
+                db.session.add(song_record)
+                db.session.commit()
+                print('DB RECORD ADDED SUCCESSFULLY ------------------------------------')
+
                 flash('Uploaded Sucessfully', 'success')
                 return redirect(url_for('home', user=user, form=form, songs=metadata))
             else:
@@ -93,14 +107,15 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('users'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            print(request.args)
+            return redirect(next_page) if next_page else redirect(url_for('explore'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -119,7 +134,7 @@ def save_picture(form_picture):
     picture_path = os.path.join(
         app.root_path, 'static/profile_pics', picture_fn)
 
-    output_size = (125, 125)
+    output_size = (300, 300)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
