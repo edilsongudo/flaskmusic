@@ -12,6 +12,7 @@
 <body>
 
 <div class="home">
+    {% if current_user.username.lower() == user.lower() %}
         <div class="file-upload">
             <form method="POST" enctype="multipart/form-data">
                 {{ form.csrf_token }}
@@ -27,8 +28,9 @@
                 </label>
             </form>
         </div>
+    {% endif %}
 
-        {% if songs|length >= 1 %}
+        {% if songs|length > 0 %}
             <audio class="{{ songs[0].filename }}" src="../static/music/{{ user }}" id="audio"></audio>
         {% endif %}
 
@@ -77,7 +79,9 @@
                 <button onclick="closedropdown()">
                     <i class="fas fa-times" id="closelyrics" style="font-size: 24px;"></i>
                 </button>
-                    <li><a href="/delete/{{ user }}/{{ song.filename }}">Delete Song</a></li>
+                    {% if current_user.username.lower() == user.lower() %}
+                        <li><a href="/delete/{{ user }}/{{ song.filename }}">Delete Song</a></li>
+                    {% endif %}
               </div>
             </div>
 

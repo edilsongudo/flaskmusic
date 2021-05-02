@@ -23,7 +23,7 @@ img {
   background-color: lightgray;
 }
 
-a {
+a.playlist-link {
     color: white;
     background: #1C9ACEed;
     padding: 10px;

@@ -11,9 +11,11 @@ from PIL import Image
 from flask_login import login_user, current_user, logout_user, login_required
 import random
 
+@app.route('/')
 @app.route('/users')
 def users():
-    return render_template('users2.html')
+    users = User.query.all()
+    return render_template('users.html', users=users)
 
 @app.route('/<username>')
 def user(username):
@@ -75,8 +77,13 @@ def home(user):
 
 
 @app.route("/delete/<user>/<song>")
+@login_required
 def deletesong(user, song):
-    os.remove(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], f'{user}/{song}'))
+    if user.lower() == current_user.username.lower():
+        song = current_user.songs.get_or_404(song_filename=song)
+        db.session.delete(song)
+        db.session.commit()
+        os.remove(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], f'{user}/{song}'))
     form = MusicForm()
     metadata = []
     songs = os.listdir(os.path.join(app.config['UPLOADED_AUDIOS_DEST'], user))
@@ -90,7 +97,7 @@ def deletesong(user, song):
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('users'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
@@ -115,7 +122,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             print(request.args)
-            return redirect(next_page) if next_page else redirect(url_for('explore'))
+            return redirect(next_page) if next_page else redirect(url_for('users'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -124,7 +131,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('users'))
 
 
 def save_picture(form_picture):

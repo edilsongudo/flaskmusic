@@ -35,7 +35,7 @@ body {
   filter: opacity(0.9);
 }
 
-a {
+a.user {
     color: white;
     background: #1C9ACEed;
     padding: 10px;
